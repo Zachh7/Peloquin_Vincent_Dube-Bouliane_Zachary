@@ -106,7 +106,7 @@ public class Server {
                 String cours = courseRead.readLine();
                 String[] coursArr = cours.split("\t");
                 if ( coursArr[2] == arg ) {
-                    Course coursObj = new Course(coursArr[2], coursArr[1], coursArr[0]);
+                    Course coursObj = new Course(coursArr[1], coursArr[0], coursArr[2]);
                     listeCours.add(coursObj);
                 }
             }
