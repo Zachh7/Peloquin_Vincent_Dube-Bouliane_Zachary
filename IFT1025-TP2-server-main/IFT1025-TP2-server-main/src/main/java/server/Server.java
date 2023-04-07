@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Server {
 
@@ -18,6 +19,11 @@ public class Server {
     private ObjectOutputStream objectOutputStream;
     private final ArrayList<EventHandler> handlers;
 
+    /**
+     * Constructeur pour le serveur qui est appele lorsque le serveur est demarré.
+     * @param port Le port utilisé par le serveur.
+     * @throws IOException Lance une erreur si une erreur se produit lors de l'ouverture du serveur.
+     */
     public Server(int port) throws IOException {
         this.server = new ServerSocket(port, 1);
         this.handlers = new ArrayList<EventHandler>();
@@ -59,6 +65,13 @@ public class Server {
             this.alertHandlers(cmd, arg);
         }
     }
+
+    /**
+     * Prends la ligne de commande envoyé par le client et la transforme en pair en separant
+     * la commande et l'argument.
+     * @param line La ligne ecrite par le client qui est envoyé au serveur.
+     * @return Une pair contenant la commande comme clé et l'argument comme valeur.
+     */
     public Pair<String, String> processCommandLine(String line) {
         String[] parts = line.split(" ");
         String cmd = parts[0];
@@ -101,19 +114,25 @@ public class Server {
             FileReader coursFile = new FileReader("cours.txt");
             BufferedReader courseRead = new BufferedReader(coursFile);
             ArrayList<Course> listeCours = new ArrayList<>();
+            String cours;
 
-            while ( courseRead.readLine() != null ) {
-                String cours = courseRead.readLine();
+            while ( (cours = courseRead.readLine()) != null ) {
                 String[] coursArr = cours.split("\t");
-                if ( coursArr[2] == arg ) {
+                List<String> session = Arrays.asList("Automne", "Ete", "Hiver");
+                    if ( (coursArr.length != 3) || !(session.contains(coursArr[2])) ) {
+                    throw new IOException();
+                    }
+
+                    if ( coursArr[2] == arg ) {
                     Course coursObj = new Course(coursArr[1], coursArr[0], coursArr[2]);
                     listeCours.add(coursObj);
-                }
+                    }
             }
+            courseRead.close();
             objectOutputStream.writeObject(listeCours);
 
         } catch (FileNotFoundException e) {
-            System.err.println("Fichier introuvable");;
+            System.err.println("Fichier introuvable");
         } catch (IOException e) {
             System.err.println("Probleme d'ecriture de l'objet");
         }
