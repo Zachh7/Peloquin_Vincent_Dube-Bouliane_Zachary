@@ -112,7 +112,7 @@ public class Server {
      */
     public void handleLoadCourses(String arg) {
         try {
-            FileReader coursFile = new FileReader("cours.txt");
+            FileReader coursFile = new FileReader("IFT1025-TP2-server-main/IFT1025-TP2-server-main/src/main/java/server/data/cours.txt");
             BufferedReader courseRead = new BufferedReader(coursFile);
             ArrayList<Course> listeCours = new ArrayList<>();
             String cours;
