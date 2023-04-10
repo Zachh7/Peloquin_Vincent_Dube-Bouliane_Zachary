@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Server {
 
@@ -118,18 +119,19 @@ public class Server {
 
             while ( (cours = courseRead.readLine()) != null ) {
                 String[] coursArr = cours.split("\t");
-                List<String> session = Arrays.asList("Automne", "Ete", "Hiver");
+                ArrayList<String> session = new ArrayList<>();
+                session.add("Ete"); session.add("Automne"); session.add("Hiver");
                     if ( (coursArr.length != 3) || !(session.contains(coursArr[2])) ) {
-                    throw new IOException();
+                        throw new IOException();
                     }
-
-                    if ( coursArr[2] == arg ) {
-                    Course coursObj = new Course(coursArr[1], coursArr[0], coursArr[2]);
-                    listeCours.add(coursObj);
+                    if (Objects.equals(coursArr[2], arg)) {
+                        Course coursObj = new Course(coursArr[1], coursArr[0], coursArr[2]);
+                        listeCours.add(coursObj);
                     }
             }
             courseRead.close();
             objectOutputStream.writeObject(listeCours);
+            objectOutputStream.flush();
 
         } catch (FileNotFoundException e) {
             System.err.println("Fichier introuvable");
