@@ -127,13 +127,13 @@ public class Server {
                 String[] coursArr = cours.split("\t");
                 ArrayList<String> session = new ArrayList<>();
                 session.add("Ete"); session.add("Automne"); session.add("Hiver");
-                    if ( (coursArr.length != 3) || !(session.contains(coursArr[2])) ) {
-                        throw new IOException();
-                    }
-                    if (Objects.equals(coursArr[2], arg)) {
-                        Course coursObj = new Course(coursArr[1], coursArr[0], coursArr[2]);
-                        listeCours.add(coursObj);
-                    }
+                if ( (coursArr.length != 3) || !(session.contains(coursArr[2])) ) {
+                    throw new IOException();
+                }
+                if (Objects.equals(coursArr[2], arg)) {
+                    Course coursObj = new Course(coursArr[1], coursArr[0], coursArr[2]);
+                    listeCours.add(coursObj);
+                }
             }
             courseRead.close();
             objectOutputStream.writeObject(listeCours);
@@ -153,30 +153,48 @@ public class Server {
      La méthode gére les exceptions si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
-       try {
-           System.out.println("Inscription debutee");
-           RegistrationForm registration = (RegistrationForm) this.objectInputStream.readObject();
+        String returnMessage = "Confirmation de l'inscription.";
+        String erreur = "Erreur du serveur:\n";
+        try {
+            RegistrationForm registration = (RegistrationForm) this.objectInputStream.readObject();
 
-           String formattedRegistration = registration.getCourse().getSession() + "\t" +
-                   registration.getCourse().getCode() + "\t" +
-                   registration.getMatricule() + "\t" +
-                   registration.getPrenom() + "\t" +
-                   registration.getNom() + "\t" +
-                   registration.getEmail();
+            String formattedRegistration = "\n" + registration.getCourse().getSession() + "\t" +
+                    registration.getCourse().getCode() + "\t" +
+                    registration.getMatricule() + "\t" +
+                    registration.getPrenom() + "\t" +
+                    registration.getNom() + "\t" +
+                    registration.getEmail();
 
-           FileWriter fw = new FileWriter("IFT1025-TP2-server-main/IFT1025-TP2-server-main/src/main/java/server/data/inscription.txt", true);
-           BufferedWriter bw = new BufferedWriter(fw);
-           bw.append(formattedRegistration);
-           System.out.println("Inscription confirmee");
-           bw.close();
-       }
+            File registry = new File("IFT1025-TP2-server-main/IFT1025-TP2-server-main/src/main/java/server/data/inscription.txt");
+            if (!(registry.exists())){
+                throw new FileNotFoundException();
+            }
 
-       // Catches a modifier
-       catch (IOException e) {
-           throw new RuntimeException(e);
-       } catch (ClassNotFoundException e) {
-           throw new RuntimeException(e);
-       }
+            FileWriter fw = new FileWriter("IFT1025-TP2-server-main/IFT1025-TP2-server-main/src/main/java/server/data/inscription.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.append(formattedRegistration);
+            bw.close();
+        } catch (FileNotFoundException g) {
+            returnMessage = erreur + "Le fichier inscription n'existe pas.";
+        }
+        catch (IOException e) {
+            returnMessage = erreur + "Probleme de lecture de l'objet.";
+            System.out.println(returnMessage);
+
+        }
+        catch (ClassNotFoundException f) {
+            returnMessage = erreur + "La classe registration ou course n'existe pas.";
+            System.out.println(returnMessage);
+
+        } finally {
+            try {
+                this.objectOutputStream.writeObject(returnMessage);
+            }
+            catch (IOException e) {
+                System.out.println("Probleme d'ecriture du message de retour d'inscription.");
+            }
+
+        }
     }
 }
 
