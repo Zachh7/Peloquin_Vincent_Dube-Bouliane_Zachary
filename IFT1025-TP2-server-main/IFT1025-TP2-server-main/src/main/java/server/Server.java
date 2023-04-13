@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import server.models.Course;
+import server.models.RegistrationForm;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 
 public class Server {
 
@@ -68,7 +74,7 @@ public class Server {
     }
 
     /**
-     * Prends la ligne de commande envoyé par le client et la transforme en pair en separant
+     * Prends la ligne de commande envoyée par le client et la transforme en paire en separant
      * la commande et l'argument.
      * @param line La ligne ecrite par le client qui est envoyé au serveur.
      * @return Une pair contenant la commande comme clé et l'argument comme valeur.
@@ -147,7 +153,30 @@ public class Server {
      La méthode gére les exceptions si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
-        // TODO: implémenter cette méthode
+       try {
+           System.out.println("Inscription debutee");
+           RegistrationForm registration = (RegistrationForm) this.objectInputStream.readObject();
+
+           String formattedRegistration = registration.getCourse().getSession() + "\t" +
+                   registration.getCourse().getCode() + "\t" +
+                   registration.getMatricule() + "\t" +
+                   registration.getPrenom() + "\t" +
+                   registration.getNom() + "\t" +
+                   registration.getEmail();
+
+           FileWriter fw = new FileWriter("IFT1025-TP2-server-main/IFT1025-TP2-server-main/src/main/java/server/data/inscription.txt", true);
+           BufferedWriter bw = new BufferedWriter(fw);
+           bw.append(formattedRegistration);
+           System.out.println("Inscription confirmee");
+           bw.close();
+       }
+
+       // Catches a modifier
+       catch (IOException e) {
+           throw new RuntimeException(e);
+       } catch (ClassNotFoundException e) {
+           throw new RuntimeException(e);
+       }
     }
 }
 
