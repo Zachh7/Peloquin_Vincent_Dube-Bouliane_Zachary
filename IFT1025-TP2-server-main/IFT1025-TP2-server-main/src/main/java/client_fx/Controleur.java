@@ -1,5 +1,6 @@
 package client_fx;
 
+import javafx.scene.control.Alert;
 import server.models.Course;
 import server.models.RegistrationForm;
 
@@ -23,12 +24,14 @@ public class Controleur {
     }
 
     public void registerCourse(String prenom, String nom, String email, String matricule, Course course) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Echec d'inscription");
         try {
-            String potentialErrors = this.modele.registration(prenom, nom, email, matricule, course);
+            this.modele.registration(prenom, nom, email, matricule, course);
         } catch (IOException e) {
-            throw new RuntimeException(e); // A modifier
+            alert.setContentText("Probleme de communication avec le serveur.");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e); // A modifier
+            alert.setContentText("La classe Course ou RegistrationForm n'existe pas.");
         }
     }
 }
