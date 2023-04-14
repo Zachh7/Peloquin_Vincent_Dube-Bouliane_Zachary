@@ -16,6 +16,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
+/**
+ * La classe Server est le serveur qui sera demarre pour repondre aux requetes des clients qui se connecte.
+ *
+ */
 public class Server {
 
     public final static String REGISTER_COMMAND = "INSCRIRE";
@@ -37,16 +41,28 @@ public class Server {
         this.addEventHandler(this::handleEvents);
     }
 
+    /**
+     * Ajoute un EventHandler a la liste d'EventHandler.
+     * @param h Un EventHandler a ajouter.
+     */
     public void addEventHandler(EventHandler h) {
         this.handlers.add(h);
     }
 
+    /**
+     * Averti l'eventHandler lorsque qu'une commande est recu dans le serveur.
+     * @param cmd La commande recu.
+     * @param arg Les arguments de la commande.
+     */
     private void alertHandlers(String cmd, String arg) {
         for (EventHandler h : this.handlers) {
             h.handle(cmd, arg);
         }
     }
 
+    /**
+     * La methode appelee pour demarrer le serveur et mets le serveur en attente de connexion par un client.
+     */
     public void run() {
         while (true) {
             try {
@@ -63,6 +79,11 @@ public class Server {
         }
     }
 
+    /**
+     * Reste en attente pour recevoir l'entree du client pour avertir les handlers
+     * @throws IOException si une erreur se produit dans l'entree envoye par le client.
+     * @throws ClassNotFoundException si l'objet lu n'existe pas pour le serveur
+     */
     public void listen() throws IOException, ClassNotFoundException {
         String line;
         if ((line = this.objectInputStream.readObject().toString()) != null) {
@@ -118,7 +139,7 @@ public class Server {
      */
     public void handleLoadCourses(String arg) {
         try {
-            FileReader coursFile = new FileReader("IFT1025-TP2-server-main/IFT1025-TP2-server-main/src/main/java/server/data/cours.txt");
+            FileReader coursFile = new FileReader("cours.txt");
             BufferedReader courseRead = new BufferedReader(coursFile);
             ArrayList<Course> listeCours = new ArrayList<>();
             String cours;
@@ -165,12 +186,12 @@ public class Server {
                     registration.getNom() + "\t" +
                     registration.getEmail();
 
-            File registry = new File("IFT1025-TP2-server-main/IFT1025-TP2-server-main/src/main/java/server/data/inscription.txt");
+            File registry = new File("inscription.txt");
             if (!(registry.exists())){
                 throw new FileNotFoundException();
             }
 
-            FileWriter fw = new FileWriter("IFT1025-TP2-server-main/IFT1025-TP2-server-main/src/main/java/server/data/inscription.txt", true);
+            FileWriter fw = new FileWriter("inscription.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.append(formattedRegistration);
             bw.close();

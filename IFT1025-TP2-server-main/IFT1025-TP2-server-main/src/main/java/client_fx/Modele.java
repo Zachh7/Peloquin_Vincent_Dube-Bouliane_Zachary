@@ -12,16 +12,26 @@ import javafx.scene.control.Alert;
 import server.models.Course;
 import server.models.RegistrationForm;
 
+/**
+ * La classe modele contient les methodes pour communiquer avec le serveur.
+ */
 public class Modele {
     private ArrayList courseList;
     private Socket client;
 
     private ArrayList<String> errors = new ArrayList<String>();
 
+    /**
+     * Constructeur de Modele qui seulement initialiser la liste des cours a null.
+     */
     public Modele(){
         this.courseList = null;
     }
 
+    /**
+     * Methode pour communiquer avec le serveur et cahrger les cours disponibles et les afficher.
+     * @param session La session pour laquelle ont veut recevoir la liste des cours
+     */
     public void loadCourse(String session) {
 
         try {
@@ -49,6 +59,16 @@ public class Modele {
 
     }
 
+    /**
+     * La methode inscription permet d'inscrire un etudiant a un cours si les donnees saisies sont valides.
+     * @param prenom Le prenom de la personne qui veut s'inscrire.
+     * @param nom Le nom de la personne qui veut s'inscrire.
+     * @param email Le email de la personne qui veut s'inscrire.
+     * @param matricule La matricule de la personne qui veut s'inscrire.
+     * @param cours Le cours dans lequel la personne veut s'inscrire.
+     * @throws IOException  Lance une erreur si un probleme de connexion avec le serveur se produit
+     * @throws ClassNotFoundException Lance une erreur si la classe Course ou RegistrationForm n'existe pas.
+     */
     public void registration(String prenom, String nom, String email, String matricule, Course cours)
             throws IOException, ClassNotFoundException {
 

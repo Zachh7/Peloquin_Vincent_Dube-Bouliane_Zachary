@@ -18,27 +18,40 @@ import server.models.Course;
 
 import java.util.ArrayList;
 
+/**
+ * L'affichage et les methode en rapport avec l'affichage du client_fx.
+ */
 public class Vue extends Application {
 
     private ChoiceBox sessionSelect;
     private TableView listCourses;
 
-
+    /**
+     * Methode pour connaitre quel session est selectionner dans le client.
+     * @return Un String qui est le nom de la session.
+     */
     public String getSession(){
         return (String) this.sessionSelect.getSelectionModel().getSelectedItem();
     }
 
+    /**
+     * Affiche les cours de la session dans le tableau des cours.
+     * @param courseList La liste des cours a afficher pour une session en particulier
+     */
     public void showCourse(ArrayList<Course> courseList){
         ObservableList<Course> coursListData = FXCollections.observableArrayList(courseList);
         this.listCourses.setItems(coursListData);
     }
 
+    /**
+     * La metode pour lancer le client_fx et va afficher l'affichage
+     * @param stage Le stage de base pour l'affichage.
+     */
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
 
         Controleur controleur = new Controleur(new Modele(), this);
 
-        try {
             stage.setTitle("Inscription UdeM");
             HBox root = new HBox();
             Scene scene = new Scene(root, 900, 600);
@@ -150,10 +163,5 @@ public class Vue extends Application {
 
             stage.setScene(scene);
             stage.show();
-
-
-        }catch (Exception e){
-
-        }
     }
 }
