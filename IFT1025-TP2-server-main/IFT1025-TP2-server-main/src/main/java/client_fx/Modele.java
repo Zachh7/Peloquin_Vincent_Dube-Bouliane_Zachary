@@ -1,5 +1,6 @@
 package client_fx;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -30,6 +31,25 @@ public class Modele {
 
         }
 
+    }
+
+    public String registration(String prenom, String nom, String email, String matricule, Course cours)
+            throws IOException, ClassNotFoundException {
+
+        RegistrationForm registrationForm = new RegistrationForm(prenom, nom, email, matricule, cours);
+
+        this.client = new Socket("127.0.0.1", PORT);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(this.client.getOutputStream());
+        objectOutputStream.writeObject("INSCRIRE");
+        objectOutputStream.flush();
+        objectOutputStream.writeObject(registrationForm);
+        objectOutputStream.flush();
+
+        ObjectInputStream ois = new ObjectInputStream(this.client.getInputStream());
+        String serverMessage = (String) ois.readObject();
+        System.out.println(serverMessage + "\n");
+
+        return serverMessage;
     }
 
     public ArrayList getCourseList() {

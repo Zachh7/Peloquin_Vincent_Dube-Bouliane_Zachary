@@ -85,7 +85,6 @@ public class Vue extends Application {
             vSeparator.setOrientation(Orientation.VERTICAL);
             root.getChildren().add(vSeparator);
 
-
             Label titleRight = new Label("Formulaire d'inscription");
             titleRight.setFont(Font.font(25));
             right.getChildren().add(titleRight);
@@ -97,7 +96,6 @@ public class Vue extends Application {
             TextField prenomIn = new TextField();
             formulaire.add(prenomTxt, 0, 0);
             formulaire.add(prenomIn, 1, 0);
-
 
             Label nomTxt = new Label("Nom");
             nomTxt.setFont(Font.font(16));
@@ -115,14 +113,14 @@ public class Vue extends Application {
             matriculeTxt.setFont(Font.font(16));
             TextField matriculeIn = new TextField();
             formulaire.add(matriculeTxt, 0, 3);
-            formulaire.add(matriculeIn,1, 3);
+            formulaire.add(matriculeIn, 1, 3);
 
             Button envoyerBut = new Button("Envoyer");
-            formulaire.add(envoyerBut, 1 , 4);
+            formulaire.add(envoyerBut, 1, 4);
 
             formulaire.setAlignment(Pos.TOP_CENTER);
             envoyerBut.setTranslateX(20);
-            envoyerBut.setMinSize(100,30);
+            envoyerBut.setMinSize(100, 30);
             formulaire.setHgap(40);
             formulaire.setVgap(20);
 
@@ -139,6 +137,15 @@ public class Vue extends Application {
 
             load.setOnAction((action) -> {
                 controleur.loadCourse();
+            });
+
+            envoyerBut.setOnAction((action) -> {
+                String prenom = prenomIn.getText();
+                String nom = nomIn.getText();
+                String email = emailIn.getText();
+                String matricule = matriculeIn.getText();
+                Course desiredCourse = (Course) this.listCourses.getSelectionModel().getSelectedItem();
+                controleur.registerCourse(prenom, nom, email, matricule, desiredCourse);
             });
 
 

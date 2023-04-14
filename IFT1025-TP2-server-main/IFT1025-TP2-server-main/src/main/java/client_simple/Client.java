@@ -97,7 +97,7 @@ public class Client {
         switch (choix){
             case 1: this.chooseSession();
                 break;
-            case 2: this.inscription();
+            case 2: this.registration();
                 break;
         }
     }
@@ -107,7 +107,7 @@ public class Client {
      * @throws IOException Se lance si une erreur se produit lors de la communication avec le serveur.
      * @throws ClassNotFoundException Se lance si la classe Course.java ou RegistrationForm n'existe pas.
      */
-    public void inscription() throws IOException, ClassNotFoundException, InputMismatchException  {
+    public void registration() throws IOException, ClassNotFoundException, InputMismatchException  {
         try {
             System.out.print("Veuillez saisir votre prenom: ");
             String prenom = this.scanner.nextLine();
