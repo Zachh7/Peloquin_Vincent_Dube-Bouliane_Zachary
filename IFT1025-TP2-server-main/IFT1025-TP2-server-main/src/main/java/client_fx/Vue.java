@@ -148,15 +148,6 @@ public class Vue extends Application {
                 controleur.registerCourse(prenom, nom, email, matricule, desiredCourse);
             });
 
-
-
-
-
-
-
-
-
-
             stage.setScene(scene);
             stage.show();
 
