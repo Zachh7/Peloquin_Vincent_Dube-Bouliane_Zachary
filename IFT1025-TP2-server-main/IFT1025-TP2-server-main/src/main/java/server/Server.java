@@ -161,7 +161,7 @@ public class Server {
             objectOutputStream.flush();
 
         } catch (FileNotFoundException e) {
-            System.err.println("Fichier introuvable");
+            System.err.println("Fichier 'Cours.txt' introuvable");
         } catch (IOException e) {
             System.err.println("Probleme de lecture du fichier");
         }
@@ -209,6 +209,7 @@ public class Server {
 
         } finally {
             try {
+                System.out.println(returnMessage);
                 this.objectOutputStream.writeObject(returnMessage);
             }
             catch (IOException e) {
