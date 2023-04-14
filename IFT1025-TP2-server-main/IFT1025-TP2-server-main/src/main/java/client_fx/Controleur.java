@@ -18,9 +18,9 @@ public class Controleur {
 
 
     public void loadCourse() {
-        this.modele.loadCourse(this.vue.getSession());
-        ArrayList<Course> courseList = this.modele.getCourseList();
-        this.vue.showCourse(courseList);
+            this.modele.loadCourse(this.vue.getSession());
+            ArrayList<Course> courseList = this.modele.getCourseList();
+            this.vue.showCourse(courseList);
     }
 
     public void registerCourse(String prenom, String nom, String email, String matricule, Course course) {

@@ -22,7 +22,7 @@ public class Modele {
         this.courseList = null;
     }
 
-    public void loadCourse(String session){
+    public void loadCourse(String session) {
 
         try {
             this.client = new Socket("127.0.0.1", PORT);
@@ -31,8 +31,20 @@ public class Modele {
             objectOutputStream.flush();
             ObjectInputStream objectInputStream = new ObjectInputStream(client.getInputStream());
             this.courseList = (ArrayList) objectInputStream.readObject();
-        }catch (Exception e) {
 
+            if (courseList == null){ throw new IOException() ; }
+
+
+        }catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur dans la communication avec le serveur");
+                alert.setContentText("Une erreur est survenue pendant la communication avec le serveur");
+                alert.show();
+        }catch (ClassNotFoundException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur dans la communication avec le serveur");
+            alert.setContentText("Une erreur est survenue pendant la communication avec le serveur");
+            alert.show();
         }
 
     }

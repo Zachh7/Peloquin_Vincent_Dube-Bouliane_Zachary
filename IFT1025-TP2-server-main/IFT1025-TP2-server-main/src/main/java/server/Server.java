@@ -127,7 +127,7 @@ public class Server {
                 String[] coursArr = cours.split("\t");
                 ArrayList<String> session = new ArrayList<>();
                 session.add("Ete"); session.add("Automne"); session.add("Hiver");
-                if ( (coursArr.length != 3) || !(session.contains(coursArr[2])) ) {
+                if ( (coursArr.length != 3) || !(session.contains(coursArr[2])) || !(coursArr[0].matches("[A-Z]{3}[0-9]{4}")) ) {
                     throw new IOException();
                 }
                 if (Objects.equals(coursArr[2], arg)) {
@@ -142,7 +142,7 @@ public class Server {
         } catch (FileNotFoundException e) {
             System.err.println("Fichier introuvable");
         } catch (IOException e) {
-            System.err.println("Probleme d'ecriture de l'objet");
+            System.err.println("Probleme de lecture du fichier");
         }
 
     }

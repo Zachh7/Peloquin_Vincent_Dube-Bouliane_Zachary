@@ -42,6 +42,9 @@ public class Client {
             objectOutputStream.flush();
             ObjectInputStream objectInputStream = new ObjectInputStream(client.getInputStream());
             this.courseList = (ArrayList) objectInputStream.readObject();
+
+            if (courseList == null){ throw new IOException() ; }
+
             System.out.println("Les cours offert pendant la session d'" + session.toLowerCase() + " sont:\n");
             for ( int i=0; i<courseList.size(); i++ ){
                 Course cours = (Course) courseList.get(i);
@@ -50,9 +53,9 @@ public class Client {
             System.out.print("\n");
 
         } catch (IOException e) {
-            System.out.println("Erreur dans la communication avec le serveur");
+            System.err.println("Erreur dans la communication avec le serveur");
         } catch (ClassNotFoundException e) {
-            System.out.println("La classe Course ou RegistrationForm n'existe pas");
+            System.err.println("La classe Course ou RegistrationForm n'existe pas");
         }
 
     }
@@ -89,7 +92,6 @@ public class Client {
     public void cmd() throws IOException, ClassNotFoundException {
         System.out.print("Choix:\n1. Consulter les cours offerts pour une autre session\n2. " +
                 "Inscription à un cours\nChoix: ");
-        //Scanner scanner = new Scanner(System.in);
         int choix = this.scanner.nextInt();
         this.scanner.nextLine();
         System.out.print("\n");
