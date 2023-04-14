@@ -1,0 +1,3 @@
+Automne	IFT2255	12345678	Michalis	Famelis	mfamelis@iro.umontreal.ca
+Automne	IFT1015	20215084	Zach	DB	zach@gmail.com
+Automne	IFT1015	20215084	Zach	DB	zach@gmail.com
